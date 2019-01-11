@@ -15,7 +15,7 @@ func main() {
 	client := &http.Client{}
 
 	r.POST("/v1/email/add", func(c *gin.Context) {
-		var email EMAIL
+		var email Email
 		c.BindJSON(&email)
 		email.Action = "addnoforce"
 		postData, err := json.Marshal(email)
