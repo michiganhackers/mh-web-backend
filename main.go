@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -15,6 +16,7 @@ func main() {
 	client := &http.Client{}
 
 	r.POST("/v1/email/add", func(c *gin.Context) {
+		fmt.Println("recieved email request")
 		var email Email
 		c.BindJSON(&email)
 		email.Action = "addnoforce"
