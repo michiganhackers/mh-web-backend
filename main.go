@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -51,5 +51,10 @@ func main() {
 
 		c.Status(http.StatusOK)
 	})
-	r.Run(":8080")
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "3000"
+	}
+	r.Run(":" + port)
 }
