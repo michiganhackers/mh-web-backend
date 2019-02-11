@@ -8,11 +8,13 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+	r.Use(cors.Default())
 	client := &http.Client{}
 
 	r.POST("/v1/email/add", func(c *gin.Context) {
