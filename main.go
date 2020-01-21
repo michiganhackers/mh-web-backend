@@ -2,6 +2,7 @@ package main
 
 import (
 	"mh-web-backend/controllers"
+	"mh-web-backend/env"
 	"net/http"
 	"os"
 
@@ -9,6 +10,7 @@ import (
 )
 
 func main() {
+	env.InitEnvironmentVariables()
 	r := gin.Default()
 	client := &http.Client{}
 

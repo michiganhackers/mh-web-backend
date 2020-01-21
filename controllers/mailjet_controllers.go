@@ -37,12 +37,12 @@ func addEmailController(r *gin.Engine, client *http.Client) {
 		response, err := client.Do(request)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
-			log.Println(err)
+			log.Println("Failed to send request", err)
 			return
 		}
 		if response.StatusCode < 200 || response.StatusCode >= 300 {
 			c.Status(http.StatusUnauthorized)
-			log.Println(err)
+			log.Println("Mailjet refused request", err)
 			defer response.Body.Close()
 			return
 		}
@@ -60,17 +60,17 @@ func healthController(r *gin.Engine, client *http.Client) {
 			log.Println(err)
 			return
 		}
-
+		log.Println(env.MailjetPublicKey, env.MailjetSecretKey)
 		request.SetBasicAuth(env.MailjetPublicKey, env.MailjetSecretKey)
 		response, err := client.Do(request)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
-			log.Println(err)
+			log.Println("Failed to send request", err)
 			return
 		}
 		if response.StatusCode < 200 || response.StatusCode >= 300 {
 			c.Status(http.StatusUnauthorized)
-			log.Println(err)
+			log.Println("Mailjet refused request", err)
 			defer response.Body.Close()
 			return
 		}

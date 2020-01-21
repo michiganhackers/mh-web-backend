@@ -1,6 +1,20 @@
 package env
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
-var MailjetPublicKey = os.Getenv("MH_MAILJET_PUBLIC")
-var MailjetSecretKey = os.Getenv("MH_MAILJET_SECRET")
+var MailjetPublicKey, MailjetSecretKey string
+
+func InitEnvironmentVariables() {
+	var ok bool
+	MailjetPublicKey, ok = os.LookupEnv("MH_MAILJET_PUBLIC")
+	if !ok {
+		log.Println("MH_MAILJET_PUBLIC env not present")
+	}
+	MailjetSecretKey, ok = os.LookupEnv("MH_MAILJET_SECRET")
+	if !ok {
+		log.Println("MH_MAILJET_SECRET env not present")
+	}
+}
