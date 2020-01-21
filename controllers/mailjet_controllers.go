@@ -60,7 +60,7 @@ func healthController(r *gin.Engine, client *http.Client) {
 			log.Println(err)
 			return
 		}
-		log.Println(env.MailjetPublicKey, env.MailjetSecretKey)
+
 		request.SetBasicAuth(env.MailjetPublicKey, env.MailjetSecretKey)
 		response, err := client.Do(request)
 		if err != nil {
