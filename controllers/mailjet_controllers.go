@@ -53,7 +53,7 @@ func addEmailController(r *gin.Engine, client *http.Client) {
 }
 
 func healthController(r *gin.Engine, client *http.Client) {
-	r.GET("/v1/health", func(c *gin.Context) {
+	r.GET("/v1/email/health", func(c *gin.Context) {
 		request, err := http.NewRequest("GET", "https://api.mailjet.com/v3/REST/user", nil)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
