@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"log"
+	"mh-web-backend/controllers"
+	"mh-web-backend/env"
 	"net/http"
 	"os"
 
@@ -12,47 +10,13 @@ import (
 )
 
 func main() {
+	env.InitEnvironmentVariables()
 	r := gin.Default()
 	client := &http.Client{}
 
-	r.POST("/v1/email/add", func(c *gin.Context) {
-		fmt.Println("recieved email request")
-		var email Email
-		c.BindJSON(&email)
-		email.Action = "addnoforce"
-		postData, err := json.Marshal(email)
-		if err != nil {
-			c.Status(http.StatusInternalServerError)
-			log.Println(err)
-			return
-		}
+	controllers.InitControllers(r, client)
 
-		postByteBuffer := bytes.NewBuffer(postData)
-		request, err := http.NewRequest("POST", "https://api.mailjet.com/v3/REST/contactslist/1/managecontact", postByteBuffer)
-		if err != nil {
-			c.Status(http.StatusInternalServerError)
-			log.Println(err)
-			return
-		}
-
-		var mailjetPublicKey = os.Getenv("MH_MAILJET_PUBLIC")
-		var mailjetSecretKey = os.Getenv("MH_MAILJET_SECRET")
-
-		request.SetBasicAuth(mailjetPublicKey, mailjetSecretKey)
-		request.Header.Set("ContentType", "application/json")
-
-		response, err := client.Do(request)
-		if err != nil {
-			c.Status(http.StatusInternalServerError)
-			log.Println(err)
-			return
-		}
-		defer response.Body.Close()
-
-		c.Status(http.StatusOK)
-	})
 	port := os.Getenv("PORT")
-
 	if port == "" {
 		port = "3000"
 	}
